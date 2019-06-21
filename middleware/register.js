@@ -1,4 +1,5 @@
 const Users = require('../models/Users');
+
 module.exports = {
     RegisterHandler : function(req,res){
         Errors = [];
@@ -10,7 +11,7 @@ module.exports = {
             Errors.push({msg:"Password Doesn't Match"});
         }
         //Lets Register if There's No Error...
-        if(Errors.length>0){
+        if(Errors.length > 0){
             // console.log(__dirname+"\views\register");
             res.render('register',{
                 Errors,
@@ -37,14 +38,14 @@ module.exports = {
                     });
                     NewUser.save()
                     .then(u =>{
-                        req.session.LoginMsg = "You Are Successfully Register, Now try Login";
+                        req.flash('success_msg','You are Registered, Now Login!');
                         res.redirect('login');
                     })  
                     .catch(err => console.log(err));
                 }
             })
             .catch(err=>{
-
+                
             });
         }
        
