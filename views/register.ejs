@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register</title>
+</head>
+<body>
+    <form method="POST" action="register">
+        <% include ./partials/messages.ejs %>
+        <input type="text" name="name" id=""><br>
+        <input type="email" name="email" id=""><br>
+        <input type="password" name="password" id=""><br>
+        <input type="password" name="password2" id=""><br>
+        <input type="submit" value="Register">
+    </form>
+</body>
+</html>
