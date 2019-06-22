@@ -18,8 +18,10 @@ module.exports = {
             Users.findOne({email:req.body.email})
             .then(u=>{
                 if(u && u.password == req.body.password){
-                    res.end();
-                    res.redirect("dashboard");
+                    // res.end();
+                    // console.log(__dirname+"\\views");
+                    req.session.USER = u;
+                    res.redirect('dashboard');
                 }else{
                     // res.end();
                     Errors.push({msg:"Wrong Password"});

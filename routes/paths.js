@@ -7,6 +7,8 @@ router.post('/login',(req,res) => require('../middleware/login').LoginHandler(re
 //Register Paths..
 router.get('/register',(req,res) => res.render('register'));
 router.post('/register',(req,res) => require('../middleware/register').RegisterHandler(req,res));
+//Dashboard Paths..
+router.get('/dashboard',(req,res) => require('../middleware/dashboard').DashboardHandler(req,res));
 // router.get('/login',(req,res) => require('../middleware/login'));
 // router.get('/register',(req,res) => require('../middleware/register'));
 
