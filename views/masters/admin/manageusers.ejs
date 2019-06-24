@@ -55,12 +55,10 @@
     function ReSetTable(obj){
         var tbody = $('#tbodyUsers');
         for(var i = 0; i < obj.length;i++){
-            var tr = "<tr>";
-            tr += "<td>" + obj[i].name + "</td>" + "<td>$" + obj[i].email.toString() + "</td></tr>";
-
-    /* We add the table row to the table body */
-    tbody.innerHTML += tr;
+            var markup = "<tr><td>"+ (i+1) +"</td><td>" + obj[0].name + "</td><td>" + obj[0].email + "</td><td>" + obj[0].password + "</td><td>" + obj[0].status + "</td><td><button type='button' class='btn btn-primary' id='SubmitData' data-toggle='modal' data-target='#EditUserModal'>Edit</button></td><td><button type='button' class='btn btn-danger' id=''>Delete</button></td></tr>";
+            $("#tbodyUsers").append(markup);
         }
+            
     }
     function AsyncFetchList(){
         $.ajax({
