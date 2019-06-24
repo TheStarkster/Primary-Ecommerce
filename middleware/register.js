@@ -34,7 +34,8 @@ module.exports = {
                         name: req.body.name,
                         email: req.body.email,
                         password : req.body.password,
-                        status : "Active"
+                        status : "Active",
+                        isUser:true
                     });
                     NewUser.save()
                     .then(u =>{

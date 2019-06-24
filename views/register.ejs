@@ -1,10 +1,11 @@
-<div class="row mt-5">
+<% layout('layout') -%>
+  <div class="row mt-5">
         <div class="col-md-6 m-auto">
           <div class="card card-body">
             <h1 class="text-center mb-3">Register
             </h1>
             <% include ./partials/messages.ejs %>
-            <form action="/users/register" method="POST">
+            <form method="POST">
               <div class="form-group">
                 <label for="name">Name</label>
                 <input
@@ -53,7 +54,7 @@
                 Register
               </button>
             </form>
-            <p class="lead mt-4">Have An Account? <a href="/users/login">Login</a></p>
+            <p class="lead mt-4">Have An Account? <a href="/login">Login</a></p>
           </div>
         </div>
       </div>
