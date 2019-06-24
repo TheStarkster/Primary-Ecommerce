@@ -3,8 +3,6 @@ const Products = require('../../models/Products');
 module.exports = {
     Handler: function (req, res) {
         if (req.session.USER) {
-            var ProductList;
-            
             Products.find({})
                 .then(u => {
                     if (u) {

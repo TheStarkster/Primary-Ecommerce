@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-router.get('/',(req,res) => res.render('login'));
+router.get('/',(req,res) => res.redirect('login'));
 //Login Paths..
 router.get('/login',(req,res) => res.render('login'));
 router.post('/login',(req,res) => require('../middleware/login').LoginHandler(req,res));

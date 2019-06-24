@@ -1,0 +1,106 @@
+<% include layout.ejs -%>
+
+<div class="modal fade" id="EditUserModal" tabindex="-1" role="dialog" aria-labelledby="EditUser" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="EditUser">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label id="WarningLabel" style="color: red;display: none;">Please Fill All The Fields</label>
+                <form method="POST" action="" id="CreateProductForm">
+                    <div class="form-group">
+                        <input type="name" class="form-control" id="UserName" placeholder="Enter User Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="name" class="form-control" id="EmailId" placeholder="Enter Email">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="Paswd" placeholder="Enter Password">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="CloseModal" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="ChangeStatus">Disable</button>
+                <button type="button" class="btn btn-primary" id="SubmitData">Save</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" style="margin-top: 20px">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">User Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Password</th>
+                <th scope="col">Status</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyUsers">
+        
+        </tbody>
+    </table>
+</div>
+<script>
+    function ReSetTable(obj){
+        var tbody = $('#tbodyUsers');
+        for(var i = 0; i < obj.length;i++){
+            var tr = "<tr>";
+            tr += "<td>" + obj[i].name + "</td>" + "<td>$" + obj[i].email.toString() + "</td></tr>";
+
+    /* We add the table row to the table body */
+    tbody.innerHTML += tr;
+        }
+    }
+    function AsyncFetchList(){
+        $.ajax({
+                type: "POST",
+                url: '/admin/FetchUsers',
+                dataType: 'json'
+            }).done(function(data){
+                console.log(data);
+                ReSetTable(data);   
+            })
+           
+    }
+    $(document).ready(AsyncFetchList());
+    var status,email,name;
+    $('#EditBtn').click(function () {
+        status = $(this).closest('tr').find('td:nth-child(5)').text();
+        email = $(this).closest('tr').find('td:nth-child(3)').text();
+        name = $(this).closest('tr').find('td:nth-child(2)').text();
+
+        $('#UserName').val(name);
+        $('#EmailId').val(email);
+        if(status == "Inactive"){
+            $('#ChangeStatus').text("Enable");
+            $('#ChangeStatus').removeClass("btn-danger");
+            $('#ChangeStatus').addClass("btn-success");
+        }
+    });
+
+    $('#SubmitData').click(function(){
+        $.ajax({
+                type: "POST",
+                url: '/admin/EditUser',
+                data: {
+                    'Oldname':name,
+                    'Oldemail':email,
+                    'Newname':$('#UserName').val(),
+                    'Newemail': $('#EmailId').val(),
+                    'Newpassword': $('#Paswd').val(),
+                },
+                dataType: 'json'
+            })
+    });
+</script>
