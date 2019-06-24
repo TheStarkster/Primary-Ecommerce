@@ -5,5 +5,5 @@ router.get('/dashboard',(req,res) => require('../middleware/admin/dashboard').Ad
 //Handlers Paths...
 router.get('/Manage-Products',(req,res) => require('../middleware/admin/manageproduct').Handler(req,res));
 //Ajax Calls and others...
-router.post('/CreateProduct',(req,res) => require('../middleware/admin/CreateProduct').CreateProductHandler(req,res));
+router.post('/CreateProduct',(req,res) => require('../middleware/admin/manageproduct').CreateProductHandler(req,res));
 module.exports = router;

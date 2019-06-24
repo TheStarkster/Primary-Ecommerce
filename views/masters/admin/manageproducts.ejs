@@ -4,7 +4,7 @@
     <!-- ADD NEW PRODUCT -->
     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#AddProductModal"
         style="margin: 15px">
-        Add New Product
+        Create New Product
     </button>
 
     <div class="modal fade" id="AddProductModal" tabindex="-1" role="dialog" aria-labelledby="AddProductModal"
@@ -18,23 +18,24 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <label id="WarningLabel" style="color: red;display: none;">Please Fill All The Fields</label>
                     <form method="POST" action="" id="CreateProductForm">
                         <div class="form-group">
                             <input type="name" class="form-control" id="productTitle" placeholder="Enter Product Title">
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" id="" rows="2"
+                            <textarea class="form-control" id="desc" rows="2"
                                 placeholder="Enter The Discription of the Product..."></textarea>
                         </div>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Rs.</div>
                             </div>
-                            <input type="number" class="form-control" id="" placeholder="Enter Product Price">
+                            <input type="number" class="form-control" id="price" placeholder="Enter Product Price">
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"  data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" id="CloseModal" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="SubmitData">Create Product</button>
                 </div>
                 </form>
@@ -47,17 +48,19 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
+                <th scope="col">Item Name</th>
+                <th scope="col">Price</th>
                 <th scope="col">Edit</th>
                 <th scope="col">Delete</th>
             </tr>
         </thead>
         <tbody>
+            <% if(typeof u != 'undefined') { var count = 1; %>
+            <% u.forEach(function(item){ %>
             <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
+                <th scope="row"><%=count%></th>
+                <td><%=item.title%></td>
+                <td><%=item.price%>₹</td>
                 <td>
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="">
                         Edit
@@ -69,18 +72,50 @@
                     </button>
                 </td>
             </tr>
+            <% count++;}); %>
+            <% } %>
         </tbody>
     </table>
 </div>
 <!-- SCRIPT -->
+
+<!-- SUBMITTING PRODUCT TO DATABASE -->
 <script>
     $('#SubmitData').click(function () {
-        $.ajax({
-            type: "POST",
-            url: '/admin/CreateProduct',
-            // success: ,
-            dataType: 'json'
-        })
+        if ($('#productTitle').val() != '' && $('#desc').val() != '' && $('#price').val() != '') {
+            $.ajax({
+                type: "POST",
+                url: '/admin/CreateProduct',
+                data: {
+                    'title': $('#productTitle').val(),
+                    'desc': $('#desc').val(),
+                    'price': $('#price').val()
+                },
+                dataType: 'json'
+            }).done(function (data) {
+                JSON.stringify(data);
+                if (data.title == "Already Exists") {
+                    swal({
+                        title: "Warning",
+                        text: "This Product Already Exists,Please try with Another one!",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: false,
+                    });
+                }
+            });
+            $('#productTitle').val('');
+            $('#desc').val('');
+            $('#price').val('');
+            $('#CloseModal').click();
+            $('#WarningLabel').css('display', 'none');
+        } else {
+            $('#WarningLabel').css('display', 'block');
+        }
+
     });
+</script>
+<!-- FETCH ALL PRODUCTS -->
+<script>
 
 </script>
