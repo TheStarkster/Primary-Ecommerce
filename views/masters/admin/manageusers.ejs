@@ -52,17 +52,7 @@
     </table>
 </div>
 <script>
-    $(document).ready(function () {
-        AsyncFetchList();
-
-        var html = $(html);
-        var DeleteBtn = html.find("#DeleteUser");
-        console.log(DeleteBtn);
-        $(DeleteBtn).click(function (e) {
-            var txt = $(e.target).text();
-            alert(txt);
-        });
-        var status, email, name;
+    var status, email, name;
         function EditUserBtnClick() {
             var obj = $('html');
             status = obj.find('#tbodyUsers > tr > td:nth-child(5)').text();
@@ -82,45 +72,37 @@
             }
         }
 
-
+    $(document).ready(function () {
+        AsyncFetchList();
+        var html = $(html);
+        var DeleteBtn = html.find("#DeleteUser");
+        console.log(DeleteBtn);
+        $(DeleteBtn).click(function (e) {
+            var txt = $(e.target).text();
+            alert(txt);
+        });
     });
-
-    function DeleteUserPress(name, email) {
-        alert(name + email);
-        $.ajax({
+    
+    function DeleteBtn(el){
+        if($(el).closest("tr") != undefined){
+            $.ajax({
             type: "POST",
             url: '/admin/DeleteUser',
             data: {
-                'name': name,
-                'email': email,
+                'name': $(el).closest("tr").find("td:nth-child(2)").text(),
+                'email': $(el).closest("tr").find("td:nth-child(3)").text(),
             },
             dataType: 'json'
         }).done(
             function (data) {
                 ReSetTable(data);
-            }
-        );
-        // ev.preventDefault();
-        // alert($(this).closest('tr').find("td:nth-child(2)").text());
-
-        // alert($(this).closest("tr").val());
-        // $('#ChangeStatus').click(function () {
-        //     $.ajax({
-        //         type: "POST",
-        //         url: '/admin/DeleteUser',
-        //         data: {
-        //             'name': $(this).closest("tr").find("td:nth-child(2)"),
-        //             'email': $(this).closest("tr").find("td:nth-child(3)"),
-        //         },
-        //         dataType: 'json'
-        //     }).done(
-        //         function (data) {
-        //             ReSetTable(data);
-        //         }
-        //     );
-        //     $('#CloseModal').click();
-        // });
+            });
+        }
+        else{
+            alert("isUndefined");
+        }
     }
+
     function ReSetTable(obj) {
         for (var i = document.getElementById("tbodyUsers").rows.length; i > 0; i--) {
             document.getElementById("tbodyUsers").deleteRow(i - 1);
@@ -129,10 +111,7 @@
         var tbody = $('#tbodyUsers');
         for (var i = 0; i < obj.length; i++) {
             var values = [obj[i].name,obj[i].email] ;
-            var markup = "<tr><td>" + (i + 1) + "</td><td>" + obj[i].name + "</td><td>" + obj[i].email + "</td><td>" + obj[i].password + "</td><td>" + obj[i].status + "</td><td><button type='button' onclick='EditUserBtnClick()' class='btn btn-primary' id='OpenEditUser' data-toggle='modal' data-target='#EditUserModal'>Edit</button></td></tr>";
-            var BtnTd = $("<td><button type='button' class='btn btn-danger' id='DeleteUser' onclick=''>Delete</button></td>").on('click',function(){
-                alert("hi");
-            });
+            var markup = "<tr><td>" + (i + 1) + "</td><td>" + obj[i].name + "</td><td>" + obj[i].email + "</td><td>" + obj[i].password + "</td><td>" + obj[i].status + "</td><td><button type='button' onclick='EditUserBtnClick()' class='btn btn-primary' id='OpenEditUser' data-toggle='modal' data-target='#EditUserModal'>Edit</button></td><td><button type='button' class='btn btn-danger' onclick='DeleteBtn(this)' id='DeleteUser"+(i+1)+"' onclick=''>Delete</button></td></tr>";
             $("#tbodyUsers").append(markup);
         }
     }

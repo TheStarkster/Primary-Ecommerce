@@ -65,5 +65,19 @@ module.exports = {
                         });
                 }
             })
+    },
+    DeleteUser: function(req,res){
+        Users.findOneAndDelete({
+            name: req.body.name,
+            email: req.body.email
+        })
+            .then(u => {
+                Users.find({}).then(u => {
+                    // console.log("****");
+                    // console.log(u);
+                    // console.log("****");
+                    res.send(u);
+                })
+            })
     }
 }
