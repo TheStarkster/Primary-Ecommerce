@@ -9,4 +9,6 @@ router.get('/Manage-Users',(req,res) => require('../middleware/admin/manageusers
 router.post('/CreateProduct',(req,res) => require('../middleware/admin/manageproduct').CreateProductHandler(req,res));
 router.post('/EditUser',(req,res) => require('../middleware/admin/manageusers').EditUserHandler(req,res));
 router.post('/FetchUsers',(req,res) => require('../middleware/admin/manageusers').FetchUserList(req,res));
+router.post('/EditStatus',(req,res) => require('../middleware/admin/manageusers').EditUserStatus(req,res));
+router.post('/FetchProducts',(req,res) => require('../middleware/admin/manageproduct').FetchProductList(req,res));
 module.exports = router;

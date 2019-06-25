@@ -3,14 +3,7 @@ const Products = require('../../models/Products');
 module.exports = {
     Handler: function (req, res) {
         if (req.session.USER) {
-            Products.find({})
-                .then(u => {
-                    if (u) {
-                        ProductList = u;
-                        console.log(u);
-                        res.render('masters\\admin\\manageproducts', {u});
-                    }
-                })
+            res.render('masters\\admin\\manageproducts');
         } else {
             req.session.destroy();
             res.redirect('../../login');
@@ -34,7 +27,11 @@ module.exports = {
                 }
             })
             .catch(err => {
-                console.log(err);
             })
     },
+    FetchProductList: function(req,res){
+        Products.find({}).then(u => {
+            res.send(u);
+        })
+    }
 }

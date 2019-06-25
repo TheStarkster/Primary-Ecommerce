@@ -47,58 +47,143 @@
             </tr>
         </thead>
         <tbody id="tbodyUsers">
-        
+
         </tbody>
     </table>
 </div>
 <script>
-    function ReSetTable(obj){
+    $(document).ready(function () {
+        AsyncFetchList();
+
+        var html = $(html);
+        var DeleteBtn = html.find("#DeleteUser");
+        console.log(DeleteBtn);
+        $(DeleteBtn).click(function (e) {
+            var txt = $(e.target).text();
+            alert(txt);
+        });
+        var status, email, name;
+        function EditUserBtnClick() {
+            var obj = $('html');
+            status = obj.find('#tbodyUsers > tr > td:nth-child(5)').text();
+            email = obj.find('#tbodyUsers > tr > td:nth-child(3)').text();
+            name = obj.find('#tbodyUsers > tr > td:nth-child(2)').text();
+
+            $('#UserName').val(name);
+            $('#EmailId').val(email);
+            if (status == "Inactive") {
+                $('#ChangeStatus').removeClass("btn-danger");
+                $('#ChangeStatus').addClass("btn-success");
+                $('#ChangeStatus').text("Enable");
+            } else {
+                $('#ChangeStatus').removeClass("btn-success");
+                $('#ChangeStatus').addClass("btn-danger");
+                $('#ChangeStatus').text("Disable");
+            }
+        }
+
+
+    });
+
+    function DeleteUserPress(name, email) {
+        alert(name + email);
+        $.ajax({
+            type: "POST",
+            url: '/admin/DeleteUser',
+            data: {
+                'name': name,
+                'email': email,
+            },
+            dataType: 'json'
+        }).done(
+            function (data) {
+                ReSetTable(data);
+            }
+        );
+        // ev.preventDefault();
+        // alert($(this).closest('tr').find("td:nth-child(2)").text());
+
+        // alert($(this).closest("tr").val());
+        // $('#ChangeStatus').click(function () {
+        //     $.ajax({
+        //         type: "POST",
+        //         url: '/admin/DeleteUser',
+        //         data: {
+        //             'name': $(this).closest("tr").find("td:nth-child(2)"),
+        //             'email': $(this).closest("tr").find("td:nth-child(3)"),
+        //         },
+        //         dataType: 'json'
+        //     }).done(
+        //         function (data) {
+        //             ReSetTable(data);
+        //         }
+        //     );
+        //     $('#CloseModal').click();
+        // });
+    }
+    function ReSetTable(obj) {
+        for (var i = document.getElementById("tbodyUsers").rows.length; i > 0; i--) {
+            document.getElementById("tbodyUsers").deleteRow(i - 1);
+        }
+
         var tbody = $('#tbodyUsers');
-        for(var i = 0; i < obj.length;i++){
-            var markup = "<tr><td>"+ (i+1) +"</td><td>" + obj[0].name + "</td><td>" + obj[0].email + "</td><td>" + obj[0].password + "</td><td>" + obj[0].status + "</td><td><button type='button' class='btn btn-primary' id='SubmitData' data-toggle='modal' data-target='#EditUserModal'>Edit</button></td><td><button type='button' class='btn btn-danger' id=''>Delete</button></td></tr>";
+        for (var i = 0; i < obj.length; i++) {
+            var values = [obj[i].name,obj[i].email] ;
+            var markup = "<tr><td>" + (i + 1) + "</td><td>" + obj[i].name + "</td><td>" + obj[i].email + "</td><td>" + obj[i].password + "</td><td>" + obj[i].status + "</td><td><button type='button' onclick='EditUserBtnClick()' class='btn btn-primary' id='OpenEditUser' data-toggle='modal' data-target='#EditUserModal'>Edit</button></td></tr>";
+            var BtnTd = $("<td><button type='button' class='btn btn-danger' id='DeleteUser' onclick=''>Delete</button></td>").on('click',function(){
+                alert("hi");
+            });
             $("#tbodyUsers").append(markup);
         }
-            
     }
-    function AsyncFetchList(){
+    function AsyncFetchList() {
         $.ajax({
-                type: "POST",
-                url: '/admin/FetchUsers',
-                dataType: 'json'
-            }).done(function(data){
-                console.log(data);
-                ReSetTable(data);   
-            })
-           
-    }
-    $(document).ready(AsyncFetchList());
-    var status,email,name;
-    $('#EditBtn').click(function () {
-        status = $(this).closest('tr').find('td:nth-child(5)').text();
-        email = $(this).closest('tr').find('td:nth-child(3)').text();
-        name = $(this).closest('tr').find('td:nth-child(2)').text();
+            type: "POST",
+            url: '/admin/FetchUsers',
+            dataType: 'json'
+        }).done(function (data) {
+            ReSetTable(data);
+        })
 
-        $('#UserName').val(name);
-        $('#EmailId').val(email);
-        if(status == "Inactive"){
-            $('#ChangeStatus').text("Enable");
-            $('#ChangeStatus').removeClass("btn-danger");
-            $('#ChangeStatus').addClass("btn-success");
-        }
+    }
+
+    $('#SubmitData').click(function () {
+        $.ajax({
+            type: "POST",
+            url: '/admin/EditUser',
+            data: {
+                'Oldname': name,
+                'Oldemail': email,
+                'Newname': $('#UserName').val(),
+                'Newemail': $('#EmailId').val(),
+                'Newpassword': $('#Paswd').val(),
+            },
+            dataType: 'json'
+        }).done(
+            function (data) {
+                ReSetTable(data);
+            }
+        );
+        $('#CloseModal').click();
     });
 
-    $('#SubmitData').click(function(){
+    $('#ChangeStatus').click(function () {
         $.ajax({
-                type: "POST",
-                url: '/admin/EditUser',
-                data: {
-                    'Oldname':name,
-                    'Oldemail':email,
-                    'Newname':$('#UserName').val(),
-                    'Newemail': $('#EmailId').val(),
-                    'Newpassword': $('#Paswd').val(),
-                },
-                dataType: 'json'
-            })
+            type: "POST",
+            url: '/admin/EditStatus',
+            data: {
+                'name': name,
+                'email': email,
+                'status': status
+            },
+            dataType: 'json'
+        }).done(
+            function (data) {
+                ReSetTable(data);
+            }
+        );
+        $('#CloseModal').click();
     });
+
+
 </script>

@@ -6,7 +6,6 @@
         style="margin: 15px">
         Create New Product
     </button>
-
     <div class="modal fade" id="AddProductModal" tabindex="-1" role="dialog" aria-labelledby="AddProductModal"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -54,26 +53,8 @@
                 <th scope="col">Delete</th>
             </tr>
         </thead>
-        <tbody>
-            <% if(typeof u != 'undefined') { var count = 1; %>
-            <% u.forEach(function(item){ %>
-            <tr>
-                <th scope="row"><%=count%></th>
-                <td><%=item.title%></td>
-                <td><%=item.price%>₹</td>
-                <td>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="">
-                        Edit
-                    </button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="">
-                        Delete
-                    </button>
-                </td>
-            </tr>
-            <% count++;}); %>
-            <% } %>
+        <tbody id="tbodyProducts">
+           
         </tbody>
     </table>
 </div>
@@ -81,6 +62,8 @@
 
 <!-- SUBMITTING PRODUCT TO DATABASE -->
 <script>
+    $(document).ready(AsyncFetchList());
+
     $('#SubmitData').click(function () {
         if ($('#productTitle').val() != '' && $('#desc').val() != '' && $('#price').val() != '') {
             $.ajax({
@@ -102,6 +85,8 @@
                         buttons: true,
                         dangerMode: false,
                     });
+                }else{
+                    ReSetTable(data);
                 }
             });
             $('#productTitle').val('');
@@ -114,8 +99,22 @@
         }
 
     });
-</script>
-<!-- FETCH ALL PRODUCTS -->
-<script>
 
+    function ReSetTable(obj){
+        var tbody = $('#tbodyProducts');
+        for(var i = 0; i < obj.length;i++){
+            var markup = "<tr><td>"+ (i+1) +"</td><td>" + obj[0].title + "</td><td>" + obj[0].price + "</td><td><button type='button' onclick='EditProductBtnClick()' class='btn btn-primary' id='OpenEditProduct' data-toggle='modal' data-target='#AddProductModal'>Edit</button></td><td><button type='button' class='btn btn-danger' id=''>Delete</button></td></tr>";
+            $("#tbodyProducts").append(markup);
+        }
+    }
+    function AsyncFetchList(){
+        $.ajax({
+                type: "POST",
+                url: '/admin/FetchProducts',
+                dataType: 'json'
+            }).done(function(data){
+                ReSetTable(data);   
+            })
+           
+    }
 </script>
