@@ -1,1 +1,32 @@
 <% include layout.ejs -%>
+
+<div class="row" style="position: fixed">
+    <% if(typeof u != 'undefined') { %>
+    <% u.forEach(function(item){ %>
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src='<%=item.image%>' alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title"><%=item.title%></h5>
+            <input type="hidden" id='hfd_id' value='<%=item._id%>'>
+            <p class="card-text"><%=item.description%></p>
+            <p class="card-text"><%=item.price%>₹</p>
+            <a id="Buy" class="btn btn-primary">Buy</a>
+        </div>
+    </div>
+    <% }); %>
+    <% } %>
+</div>
+
+<script>
+    $('#Buy').click(function () {
+        var id = $('#hfd_id').val()
+        $.ajax({
+            url: '/users/Buy/' + id,
+            type: 'POST',
+            dataType: 'json'
+        }).done(function (data) {
+            $('#spnAmount').text(data.amount + "₹");
+            $('#txtCredit').val('');
+        })
+    });
+</script>

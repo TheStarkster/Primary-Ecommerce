@@ -59,10 +59,10 @@
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0" method="POST" action="/logout">
-        <button type="button" id="creditBtn" class="btn btn-success" style="margin-right: 12px;border-radius: 18px;" data-toggle="modal"
-          data-target="#CreditAddModal">
+        <button type="button" id="creditBtn" class="btn btn-success" style="margin-right: 12px;border-radius: 18px;"
+          data-toggle="modal" data-target="#CreditAddModal">
           Credits <span class="badge badge-light" style="border-radius: 2px"
-            id=spnAmount><%=UserObj.credits.amount%>₹</span>
+            id=spnAmount><%=UserObj.credits.amount%></span>
         </button>
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="border-radius: 18px;">Log Out</button>
       </form>
@@ -94,20 +94,15 @@
         },
         dataType: 'json'
       }).done(function (data) {
-        if (data.msg == "Amount Added") {
-          RefreshCreditBtn();
-        }
-        RefreshCreditBtn();
+        $('#spnAmount').text(data.amount + "₹");
+        $('#closeCreditModal').click();
+        $('#txtCredit').val('');
       }).fail(function (data) {
         alert('fail');
       });
     });
     function RefreshCreditBtn() {
-      var AmntToSet = parseFloat($('#spnAmount').text()) + parseFloat($('#txtCredit').val());
-      // alert(AmntToSet);
-      $('#spnAmount').text(AmntToSet + "₹");
-      $('#txtCredit').val('');
-      $('#closeCreditModal').click();
+
     }
   </script>
 </body>

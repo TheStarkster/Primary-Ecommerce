@@ -1,10 +1,15 @@
 const Users = require('../../models/Users');
+const Products = require('../../models/Products');
 module.exports = {
     UserDashboardHandler: function (req, res) {
         if (req.session.USER && req.session.USER.isUser == true) {
             var UserObj = req.session.USER;
-            res.render('masters\\users\\dashboard', {
-                UserObj
+            var ProductObj;
+            Products.find().then(u=>{
+                res.render('masters\\users\\dashboard', {
+                    UserObj,
+                    u
+                });
             });
         } else {
             req.session.destroy();
@@ -38,13 +43,14 @@ module.exports = {
                     // console.log(u);
                     // res.send(u);
                     res.send({
-                        msg:"Amount Added"
+                        msg:"Success",
+                        amount:NewAmount
                     });
                 }
             })
             .catch(err => console.log(err));
     },
-    DashboardHandler: function () {
+    FetchItemHandler: function () {
 
     }
 }
