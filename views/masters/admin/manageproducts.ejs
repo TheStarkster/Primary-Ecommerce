@@ -54,7 +54,7 @@
             </tr>
         </thead>
         <tbody id="tbodyProducts">
-           
+
         </tbody>
     </table>
 </div>
@@ -85,7 +85,7 @@
                         buttons: true,
                         dangerMode: false,
                     });
-                }else{
+                } else {
                     ReSetTable(data);
                 }
             });
@@ -100,21 +100,20 @@
 
     });
 
-    function ReSetTable(obj){
+    function ReSetTable(obj) {
         var tbody = $('#tbodyProducts');
-        for(var i = 0; i < obj.length;i++){
-            var markup = "<tr><td>"+ (i+1) +"</td><td>" + obj[0].title + "</td><td>" + obj[0].price + "</td><td><button type='button' onclick='EditProductBtnClick()' class='btn btn-primary' id='OpenEditProduct' data-toggle='modal' data-target='#AddProductModal'>Edit</button></td><td><button type='button' class='btn btn-danger' id=''>Delete</button></td></tr>";
+        for (var i = 0; i < obj.length; i++) {
+            var markup = "<tr><td>" + (i + 1) + "</td><td>" + obj[i].title + "</td><td>" + obj[i].price + "₹</td><td><button type='button' onclick='EditProductBtnClick()' class='btn btn-primary' id='OpenEditProduct' data-toggle='modal' data-target='#AddProductModal'>Edit</button></td><td><button type='button' class='btn btn-danger' id=''>Delete</button></td></tr>";
             $("#tbodyProducts").append(markup);
         }
     }
-    function AsyncFetchList(){
+    function AsyncFetchList() {
         $.ajax({
-                type: "POST",
-                url: '/admin/FetchProducts',
-                dataType: 'json'
-            }).done(function(data){
-                ReSetTable(data);   
-            })
-           
+            type: "POST",
+            url: '/admin/FetchProducts',
+            dataType: 'json'
+        }).done(function (data) {
+            ReSetTable(data);
+        })
     }
 </script>

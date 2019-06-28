@@ -11,33 +11,33 @@ module.exports = {
         if (Errors.length > 0) {
             res.render('login', {
                 Errors,
-                email: req.body.email,  
+                email: req.body.email,
                 password: req.body.password
             });
         } else {
-            if(req.body.email == "admin@admin.com" && req.body.password == "admin1"){
+            if (req.body.email == "admin@admin.com" && req.body.password == "admin12") {
                 req.session.USER = {
-                    user:"admin"
+                    user: "admin"
                 };
                 res.redirect('/admin/dashboard');
-            }else{
+            } else {
                 Users.findOne({ email: req.body.email })
-                .then(u => {
-                    if (u && u.password == req.body.password) {
-                        // res.end();
-                        // console.log(__dirname+"\\views");
-                        req.session.USER = u;
-                        res.redirect('/users/dashboard');
-                    } else {
-                        // res.end();
-                        Errors.push({ msg: "Wrong Password" });
-                        res.render('login', {
-                            Errors,
-                            email: req.body.email,
-                            password: req.body.password
-                        });
-                    }
-                });
+                    .then(u => {
+                        if (u && u.password == req.body.password) {
+                            // res.end();
+                            // console.log(__dirname+"\\views");
+                            req.session.USER = u;
+                            res.redirect('/users/dashboard');
+                        } else {
+                            // res.end();
+                            Errors.push({ msg: "Wrong Password" });
+                            res.render('login', {
+                                Errors,
+                                email: req.body.email,
+                                password: req.body.password
+                            });
+                        }
+                    });
             }
         }
     }

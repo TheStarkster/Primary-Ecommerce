@@ -21,14 +21,13 @@ mongoose.connect(db,{ useNewUrlParser: true })
 
 const client = new MongoClient(db, { useNewUrlParser: true });
 client.connect(err => {
-    const collection = client.db("test").collection("devices");
     // perform actions on the collection object
     client.close();
   });
 
 //mere Pyaare Headers...
 app.use(function(req, res, next) {
-  res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+  res.set('Cache-Control', 'no-cache, private, no-store');
     next();
 });  
 app.use(session({
@@ -42,7 +41,7 @@ app.use(session({
     res.locals.error = req.flash('error');
     next();
 });
-
+app.use(express.static(__dirname + '/public'));
 app.use('/',require('./routes/paths'));
 app.use('/users',require('./routes/users'));
 app.use('/admin',require('./routes/admin'));

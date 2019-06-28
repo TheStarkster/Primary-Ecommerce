@@ -20,16 +20,23 @@ const userSchema = new mongoose.Schema({
     isUser:{
         type:Boolean,
         required:true
-    }
-});
-
-const credits = new mongoose.Schema({
-    balance:{
-        type: mongoose.Schema.Types.Decimal128,
+    },
+    credits:{
+        amount: {
+            type:String,
+            require:false
+        },
         required:false
     }
 });
 
+// const credits = new mongoose.Schema({
+//     balance:{
+//         type: mongoose.Schema.Types.Decimal128,
+//         required:false
+//     }
+// });
+
 const User = mongoose.model('user',userSchema);
-const Credits = mongoose.model('credit',credits);
-module.exports = User,Credits;
+// const Credits = mongoose.model('credit',credits);
+module.exports = User;

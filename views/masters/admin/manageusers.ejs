@@ -31,8 +31,6 @@
         </div>
     </div>
 </div>
-
-
 <div class="container" style="margin-top: 20px">
     <table class="table">
         <thead>
@@ -53,24 +51,24 @@
 </div>
 <script>
     var status, email, name;
-        function EditUserBtnClick() {
-            var obj = $('html');
-            status = obj.find('#tbodyUsers > tr > td:nth-child(5)').text();
-            email = obj.find('#tbodyUsers > tr > td:nth-child(3)').text();
-            name = obj.find('#tbodyUsers > tr > td:nth-child(2)').text();
+    function EditUserBtnClick() {
+        var obj = $('html');
+        status = obj.find('#tbodyUsers > tr > td:nth-child(5)').text();
+        email = obj.find('#tbodyUsers > tr > td:nth-child(3)').text();
+        name = obj.find('#tbodyUsers > tr > td:nth-child(2)').text();
 
-            $('#UserName').val(name);
-            $('#EmailId').val(email);
-            if (status == "Inactive") {
-                $('#ChangeStatus').removeClass("btn-danger");
-                $('#ChangeStatus').addClass("btn-success");
-                $('#ChangeStatus').text("Enable");
-            } else {
-                $('#ChangeStatus').removeClass("btn-success");
-                $('#ChangeStatus').addClass("btn-danger");
-                $('#ChangeStatus').text("Disable");
-            }
+        $('#UserName').val(name);
+        $('#EmailId').val(email);
+        if (status == "Inactive") {
+            $('#ChangeStatus').removeClass("btn-danger");
+            $('#ChangeStatus').addClass("btn-success");
+            $('#ChangeStatus').text("Enable");
+        } else {
+            $('#ChangeStatus').removeClass("btn-success");
+            $('#ChangeStatus').addClass("btn-danger");
+            $('#ChangeStatus').text("Disable");
         }
+    }
 
     $(document).ready(function () {
         AsyncFetchList();
@@ -82,23 +80,23 @@
             alert(txt);
         });
     });
-    
-    function DeleteBtn(el){
-        if($(el).closest("tr") != undefined){
+
+    function DeleteBtn(el) {
+        if ($(el).closest("tr") != undefined) {
             $.ajax({
-            type: "POST",
-            url: '/admin/DeleteUser',
-            data: {
-                'name': $(el).closest("tr").find("td:nth-child(2)").text(),
-                'email': $(el).closest("tr").find("td:nth-child(3)").text(),
-            },
-            dataType: 'json'
-        }).done(
-            function (data) {
-                ReSetTable(data);
-            });
+                type: "POST",
+                url: '/admin/DeleteUser',
+                data: {
+                    'name': $(el).closest("tr").find("td:nth-child(2)").text(),
+                    'email': $(el).closest("tr").find("td:nth-child(3)").text(),
+                },
+                dataType: 'json'
+            }).done(
+                function (data) {
+                    ReSetTable(data);
+                });
         }
-        else{
+        else {
             alert("isUndefined");
         }
     }
@@ -110,8 +108,8 @@
 
         var tbody = $('#tbodyUsers');
         for (var i = 0; i < obj.length; i++) {
-            var values = [obj[i].name,obj[i].email] ;
-            var markup = "<tr><td>" + (i + 1) + "</td><td>" + obj[i].name + "</td><td>" + obj[i].email + "</td><td>" + obj[i].password + "</td><td>" + obj[i].status + "</td><td><button type='button' onclick='EditUserBtnClick()' class='btn btn-primary' id='OpenEditUser' data-toggle='modal' data-target='#EditUserModal'>Edit</button></td><td><button type='button' class='btn btn-danger' onclick='DeleteBtn(this)' id='DeleteUser"+(i+1)+"' onclick=''>Delete</button></td></tr>";
+            var values = [obj[i].name, obj[i].email];
+            var markup = "<tr><td>" + (i + 1) + "</td><td>" + obj[i].name + "</td><td>" + obj[i].email + "</td><td>" + obj[i].password + "</td><td>" + obj[i].status + "</td><td><button type='button' onclick='EditUserBtnClick()' class='btn btn-primary' id='OpenEditUser' data-toggle='modal' data-target='#EditUserModal'>Edit</button></td><td><button type='button' class='btn btn-danger' onclick='DeleteBtn(this)' id='DeleteUser" + (i + 1) + "' onclick=''>Delete</button></td></tr>";
             $("#tbodyUsers").append(markup);
         }
     }

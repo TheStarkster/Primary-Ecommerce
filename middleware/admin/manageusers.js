@@ -18,7 +18,7 @@ module.exports = {
                             email: req.body.Newemail,
                             password: req.body.Newpassword
                         })
-                        .then(u=>{
+                        .then(u => {
                             Users.find({}).then(u => {
                                 // console.log("****");
                                 // console.log(u);
@@ -26,13 +26,13 @@ module.exports = {
                                 res.send(u);
                             })
                         })
-                        .catch(err=>{
+                        .catch(err => {
                         });
                 }
             })
-            
+
     },
-    FetchUserList: function(req,res){
+    FetchUserList: function (req, res) {
         Users.find({}).then(u => {
             // console.log("-----");
             // console.log(u);
@@ -40,7 +40,7 @@ module.exports = {
             res.send(u);
         })
     },
-    EditUserStatus: function(req,res){
+    EditUserStatus: function (req, res) {
         Users.findOne({
             name: req.body.name,
             email: req.body.email
@@ -51,9 +51,9 @@ module.exports = {
                         name: req.body.name,
                         email: req.body.email
                     }, {
-                        status: req.body.status == "Active" ? "Inactive" : "Active"
+                            status: req.body.status == "Active" ? "Inactive" : "Active"
                         })
-                        .then(u=>{
+                        .then(u => {
                             Users.find({}).then(u => {
                                 // console.log("****");
                                 // console.log(u);
@@ -61,12 +61,12 @@ module.exports = {
                                 res.send(u);
                             })
                         })
-                        .catch(err=>{
+                        .catch(err => {
                         });
                 }
             })
     },
-    DeleteUser: function(req,res){
+    DeleteUser: function (req, res) {
         Users.findOneAndDelete({
             name: req.body.name,
             email: req.body.email
