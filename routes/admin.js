@@ -12,4 +12,6 @@ router.post('/FetchUsers',(req,res) => require('../middleware/admin/manageusers'
 router.post('/EditStatus',(req,res) => require('../middleware/admin/manageusers').EditUserStatus(req,res));
 router.post('/DeleteUser',(req,res) => require('../middleware/admin/manageusers').DeleteUser(req,res));
 router.post('/FetchProducts',(req,res) => require('../middleware/admin/manageproduct').FetchProductList(req,res));
+//Email Path...
+router.post('/SendEmail',(req,res) => require('../middleware/admin/mail/email').Handler(req,res));
 module.exports = router;

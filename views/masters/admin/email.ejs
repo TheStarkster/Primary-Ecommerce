@@ -1,0 +1,50 @@
+<div class="modal fade" id="EmailModal" tabindex="-1" role="dialog" aria-labelledby="EmailModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="EmailModal">Create Email(s)</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="./SendEmail" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="" placeholder="Email: From" id="txtEmailFrom">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" name="" placeholder="Email: To" id="txtEmailTo">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="" placeholder="Subject" id="txtSub">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" id="txtMessage" placeholder="Type Your Message..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnSend" class="btn btn-primary">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+$('#btnSend').click(function(){
+    $.ajax({
+        method:'POST',
+        url:'/admin/SendEmail',
+        dataType:'json',
+        data:{
+            'MailFrom':$('#txtEmailFrom').val(),
+            'MailTo':$('#txtEmailTo').val(),
+            'Subject':$('#txtSub').val(),
+            'Text':$('#txtMessage').val()
+        }
+    }).done(function(data){
+
+    })
+});
+</script>
